@@ -1,4 +1,6 @@
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by michael on 02.11.16.
@@ -8,6 +10,7 @@ public class User implements Updateable {
     private int y;
     private String id;
     private Random random = new Random();
+    private Set<Task> myTasks = new HashSet<>();
     //direction 0: North
     //1: East
     //2: South
@@ -19,7 +22,8 @@ public class User implements Updateable {
         this.id = id;
         TimerManager.register(this);
     }
-    public boolean canMoveDirection(int direction){
+
+    private boolean canMoveDirection(int direction){
         boolean canMove =true;
         switch (direction){
             case 0:
@@ -37,9 +41,10 @@ public class User implements Updateable {
         }
         return canMove;
     }
-    public boolean move() {
+
+    private boolean move() {
         boolean hasMoved = false;
-        if(random.nextDouble()>=Controller.MOVERATE) {
+        if(random.nextDouble()<Controller.MOVERATE) {
             hasMoved= true;
             int direction = random.nextInt(3);
             if (canMoveDirection(direction)) {
@@ -63,9 +68,24 @@ public class User implements Updateable {
 
     }
 
+    private Task createTask(){
+        if (random.nextDouble() > Controller.TASKCREATERATE) return  null;
+        Task t = new Task(1,1,1,2);
+        //TODO: Stuff
+        return t;
+    }
+
+
     @Override
     public void update() {
-        move();
+        if (move()) {
+            Controller.getInstance().tasksPostionUpdated(this.myTasks);
+        }
+        Task t;
+        if ((t = createTask()) != null){
+            System.out.println("NEW TASK");
+            Controller.getInstance().addTasks(t);
+        }
         System.out.println("User " + id + " x:"+x +" y:"+y);
     }
 }

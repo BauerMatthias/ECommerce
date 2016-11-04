@@ -27,6 +27,7 @@ public class TimerManager {
 
         public void run() {
             items.forEach(name -> name.update());
+            Controller.getInstance().update();
         }
     }
 

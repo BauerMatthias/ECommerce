@@ -5,7 +5,7 @@ import java.util.Set;
  * Created by michael on 02.11.16.
  */
 public class Edge implements Updateable {
-    private Set<PM> pms = new HashSet<>();
+    public Set<PM> pms = new HashSet<>();
 
     private int x;
     private int y;
@@ -20,4 +20,14 @@ public class Edge implements Updateable {
     public void update() {
         pms.forEach(pm -> pm.update());
     }
+
+    public void addPM(PM pm){
+        pms.add(pm);
+    }
+
+    public void addPMs(Set<PM> pms){
+        this.pms.addAll(pms);
+    }
+
+
 }
