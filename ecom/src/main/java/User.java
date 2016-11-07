@@ -70,7 +70,7 @@ public class User implements Updateable {
 
     private Task createTask(){
         if (random.nextDouble() > Controller.TASKCREATERATE) return  null;
-        Task t = new Task(1,1,1,2);
+        Task t = new Task(1,20,1,10,this);
         myTasks.add(t);
         //TODO: Stuff
         return t;
@@ -84,9 +84,9 @@ public class User implements Updateable {
         }
         Task t;
         if ((t = createTask()) != null){
-            System.out.println("NEW TASK");
+           // System.out.println("NEW TASK");
             Controller.getInstance().addTasks(t);
         }
-        System.out.println("User " + id + " x:"+x +" y:"+y);
+       // System.out.println("User " + id + " x:"+x +" y:"+y);
     }
 }

@@ -16,7 +16,7 @@ public class TimerManager {
 
     public static void start() {
         TimerTask timerTask = new Task();
-        timer.scheduleAtFixedRate(timerTask, 0, 2*1000);
+        timer.scheduleAtFixedRate(timerTask, 0, 1*1000);
     }
 
     public static void stop() {
@@ -29,6 +29,7 @@ public class TimerManager {
             items.forEach(name -> name.update());
             FailureManager.getInstance().update();
             Controller.getInstance().update();
+            System.out.println("-----------------------------");
         }
     }
 

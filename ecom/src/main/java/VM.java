@@ -9,58 +9,59 @@ public class VM implements Updateable {
     private int cpu;
     private int memory;
     private int bandwidth;
+    public double dirtyRate;
 
-    public VM(int cpu, int memory, int bandwidth) {
+    public VM migratingTo = null;
+    public double lastMigrationTime;
+    public PM owner;
+
+    public VM(int cpu, int memory, int bandwidth, PM owner) {
         this.cpu = cpu;
         this.memory = memory;
         this.bandwidth = bandwidth;
+        this.dirtyRate = (cpu+memory+bandwidth)*Controller.DIRTYFACTOR;
+        this.owner = owner;
     }
 
-    private Set<Task> myTasks = new HashSet<>();
+    public Task myTask = null;
     @Override
     public void update() {
-
-        myTasks.forEach(task -> task.progress());
-        myTasks.removeIf(task -> task.isFinished());
-        System.out.println("Now there are " + myTasks.size() + " tasks");
+        if (myTask != null) {
+            myTask.progress();
+            if (myTask.isFinished()) {
+                myTask = null;
+            }
+        }
+      //  System.out.println("Now there are " + myTasks.size() + " tasks");
     }
 
     public boolean doesTaskFittIn(Task t){
-        return this.cpu - this.consumedCPU() - t.workloadCPU >0
-                && this.memory - this.consumedMemory() - t.workloadMemory >0
-                && this.bandwidth - this.consumedBandwidth() - t.workloadBandwith >0 ; //TODO: STUFF
+        return this.cpu - this.consumedCPU() - t.workloadCPU >=0
+                && this.memory - this.consumedMemory() - t.workloadMemory >=0
+                && this.bandwidth - this.consumedBandwidth() - t.workloadBandwith >=0 ; //TODO: STUFF
     }
 
     public boolean addAndAcceptTask(Task t){
         boolean b = doesTaskFittIn(t);
         if (b){
             System.out.println("TASK added");
-            myTasks.add(t);
+            myTask=t;
         }
         return b;
     }
 
     public int consumedCPU(){
-        int sum =0;
-        for (Task t:myTasks) {
-            sum += t.workloadCPU;
-        }
-        return sum;
+        if (myTask == null) return 0;
+        return myTask.workloadCPU;
     }
     public int consumedMemory(){
-        int sum =0;
-        for (Task t:myTasks) {
-            sum += t.workloadMemory;
-        }
-        return sum;
+        if (myTask == null) return 0;
+        return myTask.workloadMemory;
     }
 
     public int consumedBandwidth(){
-        int sum =0;
-        for (Task t:myTasks) {
-            sum += t.workloadBandwith;
-        }
-        return sum;
+        if (myTask == null) return 0;
+        return myTask.workloadBandwith;
     }
 
     public int getCpu() {
@@ -73,5 +74,9 @@ public class VM implements Updateable {
 
     public int getBandwidth() {
         return bandwidth;
+    }
+
+    public boolean isMigrating(){
+        return migratingTo !=null;
     }
 }

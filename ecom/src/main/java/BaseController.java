@@ -6,20 +6,41 @@ import java.util.Set;
  */
 public class BaseController extends Controller  {
 
+    Edge testEdge = new Edge(20,20);
+
+    public BaseController() {
+        PM pm = new PM(100,100,100,testEdge);
+        testEdge.addPM(pm);
+    }
 
     @Override
     public void update() {
         //TODO: ALGORITHM
-        edgeList.forEach(edge -> edge.pms.forEach(pm -> pm.addVMIfFitts(new VM(3,3,3))));
+        continueMigrate();
+        System.out.println("Failed PMS: " + failedPMs.size());
+        for (PM pm: failedPMs) {
+            for (VM vm: pm.vms) {
+                if (vm.myTask != null) {
+                    migrate(vm, testEdge.pms.get(0));
+                }
+            }
+        }
 
+        boolean breakFlag = false;
         for (Task newTask:this.newTasks) {
+            VM vm = new VM(newTask.workloadCPU,newTask.workloadMemory,newTask.workloadBandwith,null);
             for (Edge e :edgeList) {
                 for (PM pm: e.pms) {
-                    for (VM vm:pm.vms) {
-                        if (vm.addAndAcceptTask(newTask)){
-                            continue;
-                        }
+                    if (pm.doesVmFitt(vm)){
+                        pm.addVMIfFitts(vm);
+                        vm.addAndAcceptTask(newTask);
+                        migrate(vm,testEdge.pms.get(0));
+                        breakFlag = true;
+                        break;
                     }
+                }
+                if (breakFlag){
+                    break;
                 }
             }
         }
