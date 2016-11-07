@@ -1,11 +1,13 @@
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by michael on 02.11.16.
  */
 public class Edge implements Updateable {
-    public Set<PM> pms = new HashSet<>();
+    public List<PM> pms = new ArrayList<>();
 
     private int x;
     private int y;

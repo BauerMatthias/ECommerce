@@ -71,6 +71,7 @@ public class User implements Updateable {
     private Task createTask(){
         if (random.nextDouble() > Controller.TASKCREATERATE) return  null;
         Task t = new Task(1,1,1,2);
+        myTasks.add(t);
         //TODO: Stuff
         return t;
     }

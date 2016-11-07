@@ -13,4 +13,12 @@ public class Task {
         this.workloadBandwith = workloadBandwith;
         this.duration = duration;
     }
+
+    public void progress(){
+        duration--;
+    }
+
+    public boolean isFinished(){
+        return duration<=0;
+    }
 }

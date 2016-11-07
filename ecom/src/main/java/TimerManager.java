@@ -27,6 +27,7 @@ public class TimerManager {
 
         public void run() {
             items.forEach(name -> name.update());
+            FailureManager.getInstance().update();
             Controller.getInstance().update();
         }
     }

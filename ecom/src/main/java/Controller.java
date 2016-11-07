@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -10,7 +12,9 @@ public abstract class Controller implements Updateable {
     public static final double MOVERATE=0.5;
     public static final double TASKCREATERATE=0.2;
 
-    protected Set<Edge> edgeSet = new HashSet<>();
+    public List<Edge> edgeList = new ArrayList<>();
+    public List<Edge> failedEdges = new ArrayList<>();
+    public List<PM> failedPMs = new ArrayList<>();
     protected Set<Task> tasksPositionChanged = new HashSet<>();
     protected Set<Task> newTasks = new HashSet<>();
 
@@ -37,6 +41,15 @@ public abstract class Controller implements Updateable {
     }
 
     public void addEdge(Edge e){
-        edgeSet.add(e);
+        edgeList.add(e);
+    }
+
+    public void failEdges(List<Edge> failedEdges){
+        this.failedEdges = failedEdges;
+    }
+
+    public void failedPMs(List<PM> failedPMs){
+        this.failedPMs = failedPMs;
+
     }
 }

@@ -20,13 +20,15 @@ public class VM implements Updateable {
     @Override
     public void update() {
 
-        myTasks.forEach(task -> task.duration--);
-        myTasks.removeIf(task -> task.duration==0);
+        myTasks.forEach(task -> task.progress());
+        myTasks.removeIf(task -> task.isFinished());
         System.out.println("Now there are " + myTasks.size() + " tasks");
     }
 
     public boolean doesTaskFittIn(Task t){
-        return this.cpu - this.consumedCPU() - t.workloadCPU >0 && this.memory - this.consumedMemory() - t.workloadMemory >0 && this.bandwidth - this.consumedBandwidth() - t.workloadBandwith >0 ; //TODO: STUFF
+        return this.cpu - this.consumedCPU() - t.workloadCPU >0
+                && this.memory - this.consumedMemory() - t.workloadMemory >0
+                && this.bandwidth - this.consumedBandwidth() - t.workloadBandwith >0 ; //TODO: STUFF
     }
 
     public boolean addAndAcceptTask(Task t){

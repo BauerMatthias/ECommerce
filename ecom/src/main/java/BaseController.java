@@ -10,10 +10,10 @@ public class BaseController extends Controller  {
     @Override
     public void update() {
         //TODO: ALGORITHM
-        edgeSet.forEach(edge -> edge.pms.forEach(pm -> pm.addVMIfFitts(new VM(3,3,3))));
+        edgeList.forEach(edge -> edge.pms.forEach(pm -> pm.addVMIfFitts(new VM(3,3,3))));
 
         for (Task newTask:this.newTasks) {
-            for (Edge e :edgeSet) {
+            for (Edge e :edgeList) {
                 for (PM pm: e.pms) {
                     for (VM vm:pm.vms) {
                         if (vm.addAndAcceptTask(newTask)){
@@ -26,7 +26,7 @@ public class BaseController extends Controller  {
 
 
 
-        edgeSet.forEach(edge -> edge.update());
+        edgeList.forEach(edge -> edge.update());
         newTasks.clear();
     }
 }

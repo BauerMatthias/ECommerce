@@ -22,7 +22,9 @@ public class PM implements Updateable{
     }
 
     public boolean doesVmFitt(VM v){
-        return this.cpu - this.consumedCPU() - v.getCpu() >0 && this.memory - this.consumedMemory() - v.getMemory() >0 && this.bandWidth - this.consumedBandwidth() - v.getBandwidth() >0 ;
+        return this.cpu - this.reservedCPU() - v.getCpu() >0
+                && this.memory - this.reservedMemory() - v.getMemory() >0
+                && this.bandWidth - this.reservedBandwidth() - v.getBandwidth() >0 ;
     }
 
     public boolean addVMIfFitts(VM v){
@@ -41,14 +43,14 @@ public class PM implements Updateable{
     public int consumedCPU(){
         int sum =0;
         for (VM v:vms) {
-            sum += v.getCpu();
+            sum += v.consumedCPU();
         }
         return sum;
     }
     public int consumedMemory(){
         int sum =0;
         for (VM v:vms) {
-            sum += v.getMemory();
+            sum += v.consumedMemory();
         }
         return sum;
     }
@@ -56,8 +58,35 @@ public class PM implements Updateable{
     public int consumedBandwidth(){
         int sum =0;
         for (VM v:vms) {
+            sum += v.consumedBandwidth();//TODO:bandwidth or consumedbandwidth
+        }
+        return sum;
+    }
+
+    public int reservedCPU(){
+        int sum =0;
+        for (VM v:vms) {
+            sum += v.getCpu();
+        }
+        return sum;
+    }
+    public int reservedMemory(){
+        int sum =0;
+        for (VM v:vms) {
+            sum += v.getMemory();
+        }
+        return sum;
+    }
+
+    public int reservedBandwidth(){
+        int sum =0;
+        for (VM v:vms) {
             sum += v.getBandwidth();//TODO:bandwidth or consumedbandwidth
         }
         return sum;
+    }
+
+    public void fail(){
+
     }
 }
