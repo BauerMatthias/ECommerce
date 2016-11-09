@@ -12,8 +12,11 @@ public class VM implements Updateable {
     public double dirtyRate;
 
     public VM migratingTo = null;
+    public VM migratingFrom = null;
     public double lastMigrationTime;
     public PM owner;
+
+    public double migratedMemory =0;
 
     public VM(int cpu, int memory, int bandwidth, PM owner) {
         this.cpu = cpu;
@@ -23,16 +26,34 @@ public class VM implements Updateable {
         this.owner = owner;
     }
 
-    public Task myTask = null;
+    private Task myTask = null;
     @Override
     public void update() {
         if (myTask != null) {
             myTask.progress();
             if (myTask.isFinished()) {
+                System.out.println("VM" + this + " finished with Task "+ myTask);
+                myTask.user.myTasks.remove(myTask);
+                myTask.setOwner(null);
                 myTask = null;
+
+                Controller.getInstance().stopMigration(this);
+                this.delete();
             }
         }
       //  System.out.println("Now there are " + myTasks.size() + " tasks");
+    }
+
+
+    public Task getMyTask() {
+        return myTask;
+    }
+
+    public void setMyTask(Task myTask) {
+        this.myTask = myTask;
+        if (myTask!=null){
+            myTask.setOwner(this);
+        }
     }
 
     public boolean doesTaskFittIn(Task t){
@@ -45,7 +66,8 @@ public class VM implements Updateable {
         boolean b = doesTaskFittIn(t);
         if (b){
             System.out.println("TASK added");
-            myTask=t;
+            setMyTask(t);
+
         }
         return b;
     }
@@ -76,7 +98,18 @@ public class VM implements Updateable {
         return bandwidth;
     }
 
+    public void setMigratingTo(VM vm){
+        migratingTo = vm;
+        vm.migratingFrom = this;
+    }
+
     public boolean isMigrating(){
-        return migratingTo !=null;
+        return migratingTo !=null || migratingFrom != null;
+    }
+
+    public void delete(){
+        this.owner.removeMe.add(this);
+        this.migratingTo= null;
+        this.migratingFrom = null;
     }
 }

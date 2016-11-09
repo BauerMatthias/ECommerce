@@ -1,5 +1,4 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by michael on 02.11.16.
@@ -11,19 +10,44 @@ public class PM implements Updateable{
     private int bandWidth;
     public boolean failed = false;
     public Edge owner;
+    private int downTime = 0;
+    private double cpuEnegrieConsumption;
+    private double memoryEnegrieConsumption;
+    private double bandwidthEnegrieConsumption;
+    private double baseEnegrieConsumption;
+
+    public List<VM> removeMe = new ArrayList<>();
     public PM(int cpu, int memory, int bandWidth, Edge owner) {
         this.cpu = cpu;
         this.memory = memory;
         this.bandWidth = bandWidth;
         this.owner = owner;
+
+        Random random = new Random();
+        cpuEnegrieConsumption = random.nextDouble()*Controller.RANGEENEGERYRANDOM+Controller.MINENEGERYRANDOM;
+        memoryEnegrieConsumption = random.nextDouble()*Controller.RANGEENEGERYRANDOM+Controller.MINENEGERYRANDOM;
+        bandwidthEnegrieConsumption = random.nextDouble()*Controller.RANGEENEGERYRANDOM+Controller.MINENEGERYRANDOM;
+        baseEnegrieConsumption = random.nextDouble()*Controller.RANGEENEGERYRANDOM+Controller.MINENEGERYRANDOM;
+
     }
 
     @Override
     public void update() {
-        vms.forEach(vm -> vm.update());
+
+        if (failed) {
+            downTime--;
+            if (downTime <=0){
+                failed = false;
+                Controller.getInstance().restartPM(this);
+            }
+        }else {
+            vms.forEach(vm -> vm.update());
+            vms.remove(removeMe);
+        }
     }
 
     public boolean doesVmFitt(VM v){
+        if (failed) return false;
         return this.cpu - this.reservedCPU() - v.getCpu() >=0
                 && this.memory - this.reservedMemory() - v.getMemory() >=0
                 && this.bandWidth - this.reservedBandwidth() - v.getBandwidth() >=0 ;
@@ -91,6 +115,7 @@ public class PM implements Updateable{
 
     public void fail(){
         failed = true;
+        this.downTime = Controller.DOWNTIME;
     }
 
     public boolean isMigrating(){
@@ -100,5 +125,12 @@ public class PM implements Updateable{
             }
         }
         return false;
+    }
+
+    public double energieConsumption(){
+        return baseEnegrieConsumption
+                + this.consumedBandwidth() * bandwidthEnegrieConsumption
+                + this.consumedCPU() * cpuEnegrieConsumption
+                + this.consumedMemory()*memoryEnegrieConsumption;
     }
 }

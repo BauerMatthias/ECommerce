@@ -22,27 +22,26 @@ public class FailureManager implements Updateable {
     }
 
     public FailureManager() {
-        edgeFail = new NormalDistribution(1.0,0.6);
+        edgeFail = new NormalDistribution(0.8,0.4);
     }
 
     @Override
     public void update() {
-
-        /*Edge failed;
-        if (edgeFail.sample() > 1.0){
-            failed = Controller.getInstance().edgeList.get(random.nextInt(Controller.EDGECOUNT));
-            failed.fail();
-            Controller.getInstance().failEdge(failed);
-        }*/
-        
         List<PM> failedPM = new ArrayList<>();
+        Edge failedEdge;
+        if (edgeFail.sample() > 1.0){
+            failedEdge = Controller.getInstance().edgeList.get(random.nextInt(Controller.EDGECOUNT));
+            failedEdge.fail();
+            failedPM.addAll(failedEdge.pms);
+        }
+        
+
         for (Edge e: Controller.getInstance().edgeList) {
             int anzFailed = e.pmsFailed();
             for (int i = 0; i < anzFailed; i++) {
-
                 if (i < e.pms.size() ) {
                     PM pm = e.pms.get(i);
-                    if (!pm.failed && !pm.isMigrating()) {
+                    if (!pm.failed) {
                         pm.fail();
                         failedPM.add(pm);
                     }

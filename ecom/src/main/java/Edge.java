@@ -11,7 +11,6 @@ import java.util.Set;
 public class Edge implements Updateable {
     public List<PM> pms = new ArrayList<>();
     private NormalDistribution d;
-    public boolean failed = false;
 
     private int x;
     private int y;
@@ -30,7 +29,7 @@ public class Edge implements Updateable {
 
         double failurePerTick = Controller.FailurePerMinute*FailureManager.getInstance().minutesPreTick;
         double failurePerTickPerEdge = failurePerTick / Controller.EDGECOUNT;
-        d = new NormalDistribution(failurePerTickPerEdge,failurePerTickPerEdge*0.5);
+        d = new NormalDistribution(failurePerTickPerEdge,failurePerTickPerEdge*0.5); //TODO: Median muss schwanken
     }
 
 
@@ -48,11 +47,22 @@ public class Edge implements Updateable {
     }
 
     public int pmsFailed(){
-         return (int) Math.floor(d.sample());
+
+        return (int) Math.floor(d.sample());
     }
     public void fail(){
-        failed = true;
+        for (PM pm:pms) {
+            pm.fail();
+        }
 
+    }
+
+    public double energyConsumption(){
+        double sum =0;
+        for (PM pm:pms) {
+            sum+= pm.energieConsumption();
+        }
+        return sum;
     }
 
 

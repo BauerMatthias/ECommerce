@@ -6,11 +6,11 @@ import java.util.Set;
  * Created by michael on 02.11.16.
  */
 public class User implements Updateable {
-    private int x;
-    private int y;
+    public int x;
+    public int y;
     private String id;
     private Random random = new Random();
-    private Set<Task> myTasks = new HashSet<>();
+    public Set<Task> myTasks = new HashSet<>();
     //direction 0: North
     //1: East
     //2: South
@@ -70,7 +70,7 @@ public class User implements Updateable {
 
     private Task createTask(){
         if (random.nextDouble() > Controller.TASKCREATERATE) return  null;
-        Task t = new Task(1,20,1,10,this);
+        Task t = new Task(1,10,1,10,this);
         myTasks.add(t);
         //TODO: Stuff
         return t;

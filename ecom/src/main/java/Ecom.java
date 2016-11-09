@@ -12,13 +12,13 @@ public class Ecom {
     public static void main(String[] args) {
         Random random = new Random();
         Set<User> users = new HashSet<>();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             users.add(new User(0,0,""+i));
         }
         for (int j = 0; j < Controller.EDGECOUNT ; j++) {
             Edge edge = new Edge(random.nextInt(Controller.WIDTH),random.nextInt(Controller.HEIGHT));
             Set<PM> pms = new HashSet<>();
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 10; i++) {
                 pms.add(new PM(50,50,50,edge));
             }
 
@@ -32,8 +32,9 @@ public class Ecom {
 
         TimerManager.start();
         try {
-            Thread.sleep(20*1000);
+            Thread.sleep(10*1000);
             TimerManager.stop();
+            System.out.println(Controller.getInstance().totalEnergy);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
