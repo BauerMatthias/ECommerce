@@ -20,6 +20,8 @@ public class Task {
         this.duration = duration;
         this.initDuration = duration;
         this.user = user;
+        Controller.getInstance().totalDuration += duration;
+        Controller.getInstance().totalTasks++;
     }
 
     public VM getOwner() {

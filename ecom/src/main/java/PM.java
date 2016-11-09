@@ -85,7 +85,7 @@ public class PM implements Updateable{
     public int consumedBandwidth(){
         int sum =0;
         for (VM v:vms) {
-            sum += v.consumedBandwidth();//TODO:bandwidth or consumedbandwidth
+            sum += v.consumedBandwidth();
         }
         return sum;
     }
@@ -108,7 +108,7 @@ public class PM implements Updateable{
     public int reservedBandwidth(){
         int sum =0;
         for (VM v:vms) {
-            sum += v.getBandwidth();//TODO:bandwidth or consumedbandwidth
+            sum += v.getBandwidth();
         }
         return sum;
     }

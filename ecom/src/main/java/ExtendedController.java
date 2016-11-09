@@ -1,9 +1,6 @@
 import java.util.List;
 
-/**
- * Created by michael on 02.11.16.
- */
-public class BaseController extends Controller  {
+public class ExtendedController extends Controller {
 
     @Override
     public void update() {
@@ -11,19 +8,47 @@ public class BaseController extends Controller  {
         continueMigrate();
 
         //Neustarten der ausgefallen PMs (algorithm)
+        boolean breakFlag = false;
         System.out.println("Failed PMS: " + failedPMs.size());
-        for (PM pm : restartedPMs) {
+        for (PM pm : failedPMs) {
             for (VM vm:pm.vms) {
-                if (vm.getMyTask()!=null) {
-                    vm.getMyTask().reset();
+                if (vm.getMyTask()!=null&&vm.migratingFrom==null) {
+                    breakFlag = false;
+                    List<Edge> edges = Controller.getInstance().edgesSortedByDistance(pm.owner.getX(), pm.owner.getY());
+                    for (Edge e : edges) {
+                        for (PM nearPM : e.pms) {
+                            if (nearPM.doesVmFitt(vm)){
+                                migrate(vm, nearPM);
+                                Controller.getInstance().totalTicksUntilFinished+=Controller.MIGRATIONLATENCY;
+                                breakFlag = true;
+                                break;
+                            }
+                        }
+                        if (breakFlag) break;
+                    }
                 }
 
                 if (vm.migratingFrom!=null){
-                   vm.migratingFrom.lastMigrationTime =Controller.getInstance().lastMigrationTime(vm.migratingFrom,vm);
+                    VM migratingFrom = vm.migratingFrom;
+                    stopMigration(vm.migratingFrom);
+                    breakFlag = false;
+                    List<Edge> edges = Controller.getInstance().edgesSortedByDistance(migratingFrom.owner.owner.getX(), migratingFrom.owner.owner.getY());
+                    for (Edge e : edges) {
+                        for (PM nearPM : e.pms) {
+                            if (nearPM.doesVmFitt(migratingFrom)){
+                                migrate(migratingFrom, nearPM);
+                                breakFlag = true;
+                                Controller.getInstance().totalTicksUntilFinished+=Controller.MIGRATIONLATENCY;
+                                break;
+                            }
+                        }
+                        if (breakFlag) break;
+                    }
                 }
             }
         }
-        boolean breakFlag = false;
+
+        breakFlag = false;
         // User Bewegung => Migration starten
         for (Task movedTask:this.tasksPositionChanged) {
             if (movedTask.getOwner().migratingTo != null ){//Already migrating
@@ -58,7 +83,7 @@ public class BaseController extends Controller  {
         for (Task newTask:this.newTasks) {
             VM vm = new VM(newTask.workloadCPU,newTask.workloadMemory,newTask.workloadBandwith,null);
             breakFlag = false;
-            for (Edge e:Controller.getInstance().edgesSortedByDistance(newTask.user.x,newTask.user.y)) {
+            for (Edge e : Controller.getInstance().edgesSortedByDistance(newTask.user.x,newTask.user.y)) {
                 for (PM pm: e.pms) {
                     if (pm.doesVmFitt(vm)){
                         pm.addVMIfFitts(vm);
@@ -74,8 +99,6 @@ public class BaseController extends Controller  {
             if (!breakFlag){
                 newTask.user.myTasks.remove(newTask);
             }
-
-
         }
 
         for (Edge e: edgeList) {

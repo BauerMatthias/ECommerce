@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Created by michael on 02.11.16.
  */
@@ -59,7 +55,7 @@ public class VM implements Updateable {
     public boolean doesTaskFittIn(Task t){
         return this.cpu - this.consumedCPU() - t.workloadCPU >=0
                 && this.memory - this.consumedMemory() - t.workloadMemory >=0
-                && this.bandwidth - this.consumedBandwidth() - t.workloadBandwith >=0 ; //TODO: STUFF
+                && this.bandwidth - this.consumedBandwidth() - t.workloadBandwith >=0 ;
     }
 
     public boolean addAndAcceptTask(Task t){

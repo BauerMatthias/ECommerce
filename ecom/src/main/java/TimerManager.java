@@ -7,8 +7,8 @@ import java.util.Timer;
  * Created by michael on 02.11.16.
  */
 public class TimerManager {
-    private static Set<Updateable> items = new HashSet<Updateable>();
-    private static Timer timer = new Timer(true);
+    public static Set<Updateable> items = new HashSet<Updateable>();
+    private static Timer timer;
 
     public static void register(Updateable item) {
         items.add(item);
@@ -16,7 +16,8 @@ public class TimerManager {
 
     public static void start() {
         TimerTask timerTask = new Task();
-        timer.scheduleAtFixedRate(timerTask, 0, 100);
+        timer = new Timer(true);
+        timer.scheduleAtFixedRate(timerTask, 0, 50);
     }
 
     public static void stop() {

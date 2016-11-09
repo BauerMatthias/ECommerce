@@ -1,7 +1,6 @@
 import org.apache.commons.math3.distribution.NormalDistribution;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +28,7 @@ public class Edge implements Updateable {
 
         double failurePerTick = Controller.FailurePerMinute*FailureManager.getInstance().minutesPreTick;
         double failurePerTickPerEdge = failurePerTick / Controller.EDGECOUNT;
-        d = new NormalDistribution(failurePerTickPerEdge,failurePerTickPerEdge*0.5); //TODO: Median muss schwanken
+        d = new NormalDistribution(failurePerTickPerEdge,failurePerTickPerEdge*0.5);
     }
 
 

@@ -3,24 +3,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by michael on 02.11.16.
- */
 public abstract class Controller implements Updateable {
     public static final int WIDTH = 10;
     public static final int HEIGHT = 15;
     public static final double MOVERATE=0.5;
     public static final double TASKCREATERATE=0.3;
     public static final int EDGECOUNT = 18;
-    public static final int FailurePerMinute = 18;
-    public static final double TRANSMISSIONFACTOR = 20;
-    public static final double DIRTYFACTOR = 0.05;
+    public static final int FailurePerMinute = 30;
+    public static final double TRANSMISSIONFACTOR = 50;
+    public static final double DIRTYFACTOR = 0.01;
     public static final double MigrationFinishedThreshold = 5.0;
     public static final int DOWNTIME = 8;
     public static final int DISTTHRESHOLD = 5;
     public static final double MINENEGERYRANDOM=0.8;
     public static final double RANGEENEGERYRANDOM=1/10;
-    public  double totalEnergy =0;
+    public static final double MIGRATIONLATENCY=5;
+    public double totalEnergy =0;
+    public int totalTasks=0;
+    public int totalDuration=0;
+    public int totalTicksUntilFinished=0;
+    public int totalFailures=0;
+
     public List<Edge> edgeList = new ArrayList<>();
 
     public List<PM> failedPMs = new ArrayList<>();
@@ -40,9 +43,23 @@ public abstract class Controller implements Updateable {
         return instance;
     }
 
+    public static void setInstance(Controller instance) {
+        Controller.instance = instance;
+    }
+
     @Override
     public void update() {
 
+        //Calc total ticks until finished
+        for (Edge e : edgeList) {
+            for (PM pm:e.pms) {
+                for (VM vm : pm.vms) {
+                    if (vm.getMyTask() != null) {
+                        totalTicksUntilFinished++;
+                    }
+                }
+            }
+        }
     }
 
     public void tasksPostionUpdated(Set<Task> changed){
@@ -73,7 +90,7 @@ public abstract class Controller implements Updateable {
                 int destY = source.migratingTo.owner.owner.getY();
                 double transmittedVolume = source.lastMigrationTime * source.dirtyRate;
                 System.out.println("TV: " + transmittedVolume);
-                source.lastMigrationTime = transmittedVolume / transmissionRate(dist(srcX, srcY, destX, destY));//TODO: Speichern der gesamten Transmitted Volume
+                source.lastMigrationTime = transmittedVolume / transmissionRate(dist(srcX, srcY, destX, destY));
                 System.out.println(source + ":  " + transmittedVolume);
                 source.migratedMemory += transmittedVolume;
                 if (transmittedVolume < MigrationFinishedThreshold) {
@@ -128,7 +145,9 @@ public abstract class Controller implements Updateable {
     public int dist(int srcX, int srcY, int destX,int destY){
         return Math.abs(srcX-destX)+Math.abs(srcY-destY);
     }
+
     public double transmissionRate(int dist){
+        if (dist == 0) return Double.MAX_VALUE;
         return 1.0/(double)dist * TRANSMISSIONFACTOR + 1;
     }
 

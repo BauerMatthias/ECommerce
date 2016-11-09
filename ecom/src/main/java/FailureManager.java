@@ -33,11 +33,13 @@ public class FailureManager implements Updateable {
             failedEdge = Controller.getInstance().edgeList.get(random.nextInt(Controller.EDGECOUNT));
             failedEdge.fail();
             failedPM.addAll(failedEdge.pms);
+            Controller.getInstance().totalFailures+=failedEdge.pms.size();
         }
         
 
         for (Edge e: Controller.getInstance().edgeList) {
             int anzFailed = e.pmsFailed();
+            Controller.getInstance().totalFailures+=anzFailed;
             for (int i = 0; i < anzFailed; i++) {
                 if (i < e.pms.size() ) {
                     PM pm = e.pms.get(i);

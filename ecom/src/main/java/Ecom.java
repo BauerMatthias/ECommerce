@@ -1,15 +1,29 @@
-import org.apache.commons.math3.distribution.NormalDistribution;
-
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-/**
- * Created by michael on 02.11.16.
- */
 public class Ecom {
 
     public static void main(String[] args) {
+        Controller baseController = new BaseController();
+        Controller.setInstance(baseController);
+        startSimulation();
+
+        Controller extendedController = new ExtendedController();
+        Controller.setInstance(extendedController);
+        startSimulation();
+
+        System.out.println("=================================");
+        System.out.println();
+
+        System.out.println("Base:");
+        output(baseController);
+        System.out.println("Extended:");
+        output(extendedController);
+    }
+
+    public static void startSimulation() {
+        TimerManager.items.clear();
         Random random = new Random();
         Set<User> users = new HashSet<>();
         for (int i = 0; i < 10; i++) {
@@ -32,11 +46,18 @@ public class Ecom {
 
         TimerManager.start();
         try {
-            Thread.sleep(10*1000);
+            Thread.sleep(5*1000);
             TimerManager.stop();
-            System.out.println(Controller.getInstance().totalEnergy);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void output(Controller controller) {
+
+        System.out.println("Total Energy: " + controller.totalEnergy);
+        System.out.println("Total Tasks: "+  controller.totalTasks);
+        System.out.println("Avg Latency: " + (double)(controller.totalTicksUntilFinished - controller.totalDuration) / (double) controller.totalTasks);
+        System.out.println("Total Failures: "+ controller.totalFailures);
     }
 }

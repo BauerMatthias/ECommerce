@@ -72,7 +72,7 @@ public class User implements Updateable {
         if (random.nextDouble() > Controller.TASKCREATERATE) return  null;
         Task t = new Task(1,10,1,10,this);
         myTasks.add(t);
-        //TODO: Stuff
+        //TODO: Adjust default values
         return t;
     }
 
