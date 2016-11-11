@@ -26,7 +26,7 @@ public class BaseController extends Controller  {
         boolean breakFlag = false;
         // User Bewegung => Migration starten
         for (Task movedTask:this.tasksPositionChanged) {
-            if (movedTask.getOwner().migratingTo != null ){//Already migrating
+            if (movedTask.getOwner().migratingTo != null|| movedTask.getOwner().migratingFrom != null ){//Already migrating
                 break;
             }
             if (movedTask.getOwner() == null){

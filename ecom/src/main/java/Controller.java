@@ -18,6 +18,7 @@ public abstract class Controller implements Updateable {
     public static final double MINENEGERYRANDOM=0.8;
     public static final double RANGEENEGERYRANDOM=1/10;
     public static final double MIGRATIONLATENCY=5;
+
     public double totalEnergy =0;
     public int totalTasks=0;
     public int totalDuration=0;
@@ -98,7 +99,7 @@ public abstract class Controller implements Updateable {
                     System.out.println("Finished Migrating");
                     finished.add(source);
                     if (source.getMyTask() == null){
-                        System.out.println("test");
+                        System.out.println("test:   " + source);
                     }
                    if ( source.migratingTo.addAndAcceptTask(source.getMyTask())){
                         source.setMyTask(null);

@@ -12,12 +12,13 @@ public class ExtendedController extends Controller {
         System.out.println("Failed PMS: " + failedPMs.size());
         for (PM pm : failedPMs) {
             for (VM vm:pm.vms) {
-                if (vm.getMyTask()!=null&&vm.migratingFrom==null) {
+                if (vm.getMyTask()!=null&&vm.migratingFrom==null && vm.migratingTo == null) {
                     breakFlag = false;
                     List<Edge> edges = Controller.getInstance().edgesSortedByDistance(pm.owner.getX(), pm.owner.getY());
                     for (Edge e : edges) {
                         for (PM nearPM : e.pms) {
                             if (nearPM.doesVmFitt(vm)){
+                                System.out.println("Start migration because of failed PM" + pm);
                                 migrate(vm, nearPM);
                                 Controller.getInstance().totalTicksUntilFinished+=Controller.MIGRATIONLATENCY;
                                 breakFlag = true;
@@ -26,9 +27,7 @@ public class ExtendedController extends Controller {
                         }
                         if (breakFlag) break;
                     }
-                }
-
-                if (vm.migratingFrom!=null){
+                }else if (vm.migratingFrom!=null){
                     VM migratingFrom = vm.migratingFrom;
                     stopMigration(vm.migratingFrom);
                     breakFlag = false;
@@ -36,6 +35,7 @@ public class ExtendedController extends Controller {
                     for (Edge e : edges) {
                         for (PM nearPM : e.pms) {
                             if (nearPM.doesVmFitt(migratingFrom)){
+                                System.out.println("Restart migration because of failed PM Case 2" + pm);
                                 migrate(migratingFrom, nearPM);
                                 breakFlag = true;
                                 Controller.getInstance().totalTicksUntilFinished+=Controller.MIGRATIONLATENCY;
@@ -51,7 +51,7 @@ public class ExtendedController extends Controller {
         breakFlag = false;
         // User Bewegung => Migration starten
         for (Task movedTask:this.tasksPositionChanged) {
-            if (movedTask.getOwner().migratingTo != null ){//Already migrating
+            if (movedTask.getOwner().migratingTo != null || movedTask.getOwner().migratingFrom != null){//Already migrating
                 break;
             }
             if (movedTask.getOwner() == null){
@@ -64,6 +64,7 @@ public class ExtendedController extends Controller {
                 for (int i = 0; i <sortedEdges.indexOf(movedTask.getOwner().owner.owner) ; i++) {
                     for (PM pm: sortedEdges.get(i).pms) {
                         if (pm.doesVmFitt(movedTask.getOwner())){
+                            System.out.println("Start migration because of user movment");
                             migrate(movedTask.getOwner(),pm);
                             breakFlag = true;
                             break;
