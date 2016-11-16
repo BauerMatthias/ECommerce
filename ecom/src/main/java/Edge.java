@@ -11,6 +11,9 @@ public class Edge implements Updateable {
     public List<PM> pms = new ArrayList<>();
     private NormalDistribution d;
 
+
+    private static NormalDistribution metaD;
+
     private int x;
     private int y;
 
@@ -22,13 +25,20 @@ public class Edge implements Updateable {
         return y;
     }
 
+    public static double normalDistAvg(){
+        double failurePerTick = Controller.FailurePerMinute*FailureManager.getInstance().minutesPreTick;
+        double failurePerTickPerEdge = failurePerTick / Controller.EDGECOUNT;
+        if (metaD == null) {
+            metaD = new NormalDistribution(failurePerTickPerEdge, failurePerTickPerEdge * 0.3);
+        }
+        return metaD.sample();
+    }
+
     public Edge(int x, int y) {
         this.x = x;
         this.y = y;
-
-        double failurePerTick = Controller.FailurePerMinute*FailureManager.getInstance().minutesPreTick;
-        double failurePerTickPerEdge = failurePerTick / Controller.EDGECOUNT;
-        d = new NormalDistribution(failurePerTickPerEdge,failurePerTickPerEdge*0.5);
+        double avg = Edge.normalDistAvg();
+        d = new NormalDistribution(avg,avg*0.5);
     }
 
 
@@ -45,9 +55,14 @@ public class Edge implements Updateable {
         this.pms.addAll(pms);
     }
 
-    public int pmsFailed(){
+    public int anzTimedFailed =0;
+    public int anzFailedPM = 0;
 
-        return (int) Math.floor(d.sample());
+    public int pmsFailed(){
+        int anz = (int) Math.floor(d.sample());
+        anzTimedFailed++;
+        anzFailedPM+= anz;
+        return anz;
     }
     public void fail(){
         for (PM pm:pms) {

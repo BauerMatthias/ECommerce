@@ -156,4 +156,13 @@ public abstract class Controller implements Updateable {
         edgeList.sort((o1, o2) -> Integer.compare(dist(o1.getX(),o1.getY(),x,y),dist(o2.getX(),o2.getY(),x,y)));
         return edgeList;
     }
+
+    public String failedEdgesStatistics(){
+        String out ="";
+        for (Edge e:this.edgeList) {
+            out+= e + " avg FailedPMS: " + ((double)e.anzFailedPM/(double)e.anzTimedFailed) +"\n";
+        }
+
+        return out;
+    }
 }

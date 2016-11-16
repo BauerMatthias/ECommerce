@@ -59,5 +59,7 @@ public class Ecom {
         System.out.println("Total Tasks: "+  controller.totalTasks);
         System.out.println("Avg Latency: " + (double)(controller.totalTicksUntilFinished - controller.totalDuration) / (double) controller.totalTasks);
         System.out.println("Total Failures: "+ controller.totalFailures);
+        System.out.printf("Edge Fail Statistics: \n"+controller.failedEdgesStatistics());
+
     }
 }
