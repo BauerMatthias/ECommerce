@@ -17,7 +17,7 @@ public class TimerManager {
     public static void start() {
         TimerTask timerTask = new Task();
         timer = new Timer(true);
-        timer.scheduleAtFixedRate(timerTask, 0, 50);
+        timer.scheduleAtFixedRate(timerTask, 0, 25);
     }
 
     public static void stop() {

@@ -54,7 +54,7 @@ public class Ecom {
 
         TimerManager.start();
         try {
-            Thread.sleep(5*1000);
+            Thread.sleep(10*1000);
             TimerManager.stop();
         } catch (InterruptedException e) {
             e.printStackTrace();
