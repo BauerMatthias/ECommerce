@@ -6,16 +6,28 @@ public class SilverUser extends User {
     }
 
     @Override
+    public double getMeanMemory() {
+        return 7;
+    }
+
+    @Override
+    public double getMeanDuration() {
+        return 4;
+    }
+
+    @Override
+    public double getMeanBandwidth() {
+        return 8;
+    }
+
+    @Override
+    public double getMeanCpu() {
+        return 9;
+    }
+
+    @Override
     public double getMoveRate() {
         return 0.5;
     }
 
-    @Override
-    public Task getNewTask() {
-        int cpu = 7;
-        int memory = 5;
-        int bandwidth = 8;
-        int duration = 10;
-        return new Task(cpu, memory, bandwidth, duration, this);
-    }
 }

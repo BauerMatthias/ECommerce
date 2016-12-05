@@ -6,18 +6,29 @@ public class BronzeUser extends User {
     }
 
     @Override
+    public double getMeanMemory() {
+        return 3;
+    }
+
+    @Override
+    public double getMeanDuration() {
+        return 4;
+    }
+
+    @Override
+    public double getMeanBandwidth() {
+        return 3;
+    }
+
+    @Override
+    public double getMeanCpu() {
+        return 4;
+    }
+
+    @Override
     public double getMoveRate() {
         return 0.3;
     }
 
-    @Override
-    public Task getNewTask() {
-        int cpu = 2;
-        int memory = 1;
-
-        int bandwidth = 2;
-        int duration = 3;
-        return new Task(cpu, memory, bandwidth, duration, this);
-    }
 }
 

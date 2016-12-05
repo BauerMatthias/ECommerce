@@ -42,4 +42,6 @@ public class Task {
     public void reset() {
         this.duration = this.initDuration;
     }
+
+
 }
