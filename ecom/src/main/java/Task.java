@@ -2,21 +2,20 @@
  * Created by stefandraskovits on 04/11/2016.
  */
 public class Task {
-    public int workloadCPU;
-    public int workloadMemory;
-    public int workloadBandwith;
-    public int duration;
-    public int initDuration;
+    public double workloadCPU;
+    public double workloadMemory;
+    public double workloadBandwidth;
+    public double duration;
+    public double initDuration;
 
     private VM owner;
     public User user;
 
-    
 
-    public Task(int workloadCPU, int workloadMemory, int workloadBandwith, int duration,User user) {
+    public Task(double workloadCPU, double workloadMemory, double workloadBandwidth, double duration, User user) {
         this.workloadCPU = workloadCPU;
         this.workloadMemory = workloadMemory;
-        this.workloadBandwith = workloadBandwith;
+        this.workloadBandwidth = workloadBandwidth;
         this.duration = duration;
         this.initDuration = duration;
         this.user = user;
@@ -32,14 +31,15 @@ public class Task {
         this.owner = owner;
     }
 
-    public void progress(){
+    public void progress() {
         duration--;
     }
 
-    public boolean isFinished(){
-        return duration<=0;
+    public boolean isFinished() {
+        return duration <= 0;
     }
-    public void reset(){
+
+    public void reset() {
         this.duration = this.initDuration;
     }
 }

@@ -56,7 +56,7 @@ public class BaseController extends Controller  {
         //neue Task
         breakFlag = false;
         for (Task newTask:this.newTasks) {
-            VM vm = new VM(newTask.workloadCPU,newTask.workloadMemory,newTask.workloadBandwith,null);
+            VM vm = new VM(newTask.workloadCPU,newTask.workloadMemory,newTask.workloadBandwidth,null);
             breakFlag = false;
             for (Edge e:Controller.getInstance().edgesSortedByDistance(newTask.user.x,newTask.user.y)) {
                 for (PM pm: e.pms) {

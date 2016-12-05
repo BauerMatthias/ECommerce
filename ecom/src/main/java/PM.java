@@ -137,6 +137,6 @@ public class PM implements Updateable{
     }
 
     public double engeryConsumptionForTask(Task task){
-        return task.workloadCPU * cpuEnegrieConsumption + task.workloadMemory * memoryEnegrieConsumption + task.workloadBandwith * bandwidthEnegrieConsumption;
+        return task.workloadCPU * cpuEnegrieConsumption + task.workloadMemory * memoryEnegrieConsumption + task.workloadBandwidth * bandwidthEnegrieConsumption;
     }
 }

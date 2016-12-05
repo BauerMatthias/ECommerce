@@ -116,7 +116,7 @@ public abstract class Controller implements Updateable {
 
     public void migrate(VM source, PM target){
         System.out.println("Starting Migration" +source + " " + target);
-        VM vm = new VM(source.getMyTask().workloadCPU,source.getMyTask().workloadMemory,source.getMyTask().workloadBandwith,target);
+        VM vm = new VM(source.getMyTask().workloadCPU,source.getMyTask().workloadMemory,source.getMyTask().workloadBandwidth,target);
         target.addVMIfFitts(vm);
         source.setMigratingTo(vm);
         source.lastMigrationTime = lastMigrationTime(source,vm);
