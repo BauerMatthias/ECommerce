@@ -15,6 +15,7 @@ public class PM implements Updateable{
     private double memoryEnegrieConsumption;
     private double bandwidthEnegrieConsumption;
     private double baseEnegrieConsumption;
+    private static Random random = new Random();
 
     public List<VM> removeMe = new ArrayList<>();
     public PM(int cpu, int memory, int bandWidth, Edge owner) {
@@ -23,11 +24,12 @@ public class PM implements Updateable{
         this.bandWidth = bandWidth;
         this.owner = owner;
 
-        Random random = new Random();
+
         cpuEnegrieConsumption = random.nextDouble()*Controller.RANGEENEGERYRANDOM+Controller.MINENEGERYRANDOM;
         memoryEnegrieConsumption = random.nextDouble()*Controller.RANGEENEGERYRANDOM+Controller.MINENEGERYRANDOM;
         bandwidthEnegrieConsumption = random.nextDouble()*Controller.RANGEENEGERYRANDOM+Controller.MINENEGERYRANDOM;
         baseEnegrieConsumption = random.nextDouble()*Controller.RANGEENEGERYRANDOM+Controller.MINENEGERYRANDOM;
+
 
     }
 
@@ -132,5 +134,9 @@ public class PM implements Updateable{
                 + this.consumedBandwidth() * bandwidthEnegrieConsumption
                 + this.consumedCPU() * cpuEnegrieConsumption
                 + this.consumedMemory()*memoryEnegrieConsumption;
+    }
+
+    public double engeryConsumptionForTask(Task task){
+        return task.workloadCPU * cpuEnegrieConsumption + task.workloadMemory * memoryEnegrieConsumption + task.workloadBandwith * bandwidthEnegrieConsumption;
     }
 }

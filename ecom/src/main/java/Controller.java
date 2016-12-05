@@ -6,6 +6,7 @@ import java.util.Set;
 public abstract class Controller implements Updateable {
     public static final int WIDTH = 10;
     public static final int HEIGHT = 15;
+    public static final double MOVERATE=0.5;
     public static final double TASKCREATERATE=0.3;
     public static final int EDGECOUNT = 18;
     public static final int FailurePerMinute = 30;
@@ -14,8 +15,8 @@ public abstract class Controller implements Updateable {
     public static final double MigrationFinishedThreshold = 5.0;
     public static final int DOWNTIME = 8;
     public static final int DISTTHRESHOLD = 5;
-    public static final double MINENEGERYRANDOM=0.8;
-    public static final double RANGEENEGERYRANDOM=1/10;
+    public static final double MINENEGERYRANDOM=0.7;
+    public static final double RANGEENEGERYRANDOM=0.5;
     public static final double MIGRATIONLATENCY=5;
 
     public double totalEnergy =0;

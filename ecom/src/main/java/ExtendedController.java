@@ -16,7 +16,7 @@ public class ExtendedController extends Controller {
                     breakFlag = false;
                     List<Edge> edges = Controller.getInstance().edgesSortedByDistance(pm.owner.getX(), pm.owner.getY());
                     for (Edge e : edges) {
-                        for (PM nearPM : e.pms) {
+                        for (PM nearPM : e.energySorterPMs(vm.getMyTask())) {
                             if (nearPM.doesVmFitt(vm)){
                                 System.out.println("Start migration because of failed PM" + pm);
                                 migrate(vm, nearPM);
@@ -33,7 +33,7 @@ public class ExtendedController extends Controller {
                     breakFlag = false;
                     List<Edge> edges = Controller.getInstance().edgesSortedByDistance(migratingFrom.owner.owner.getX(), migratingFrom.owner.owner.getY());
                     for (Edge e : edges) {
-                        for (PM nearPM : e.pms) {
+                        for (PM nearPM : e.energySorterPMs(migratingFrom.getMyTask())) {
                             if (nearPM.doesVmFitt(migratingFrom)){
                                 System.out.println("Restart migration because of failed PM Case 2" + pm);
                                 migrate(migratingFrom, nearPM);
@@ -62,7 +62,7 @@ public class ExtendedController extends Controller {
             if (aktDist > Controller.DISTTHRESHOLD){
                 List<Edge> sortedEdges =Controller.getInstance().edgesSortedByDistance(movedTask.user.x,movedTask.user.y );
                 for (int i = 0; i <sortedEdges.indexOf(movedTask.getOwner().owner.owner) ; i++) {
-                    for (PM pm: sortedEdges.get(i).pms) {
+                    for (PM pm: sortedEdges.get(i).energySorterPMs(movedTask)) {
                         if (pm.doesVmFitt(movedTask.getOwner())){
                             System.out.println("Start migration because of user movment");
                             migrate(movedTask.getOwner(),pm);
@@ -85,7 +85,7 @@ public class ExtendedController extends Controller {
             VM vm = new VM(newTask.workloadCPU,newTask.workloadMemory,newTask.workloadBandwith,null);
             breakFlag = false;
             for (Edge e : Controller.getInstance().edgesSortedByDistance(newTask.user.x,newTask.user.y)) {
-                for (PM pm: e.pms) {
+                for (PM pm: e.energySorterPMs(newTask)) {
                     if (pm.doesVmFitt(vm)){
                         pm.addVMIfFitts(vm);
                         vm.addAndAcceptTask(newTask);

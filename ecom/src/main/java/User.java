@@ -2,10 +2,13 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public abstract class User implements Updateable {
+/**
+ * Created by michael on 02.11.16.
+ */
+public class User implements Updateable {
     public int x;
     public int y;
-    protected String id;
+    private String id;
     private Random random = new Random();
     public Set<Task> myTasks = new HashSet<>();
     //direction 0: North
@@ -13,9 +16,10 @@ public abstract class User implements Updateable {
     //2: South
     //3: West
 
-    public User(int x, int y) {
+    public User(int x, int y, String id) {
         this.x = x;
         this.y = y;
+        this.id = id;
         TimerManager.register(this);
     }
 
@@ -26,10 +30,10 @@ public abstract class User implements Updateable {
                 canMove = y>1;
                 break;
             case 1:
-                canMove = x< Controller.WIDTH-1;
+                canMove = x<Controller.WIDTH-1;
                 break;
             case 2:
-                canMove = y< Controller.HEIGHT-1;
+                canMove = y<Controller.HEIGHT-1;
                 break;
             case 3:
                 canMove = x >1;
@@ -38,11 +42,9 @@ public abstract class User implements Updateable {
         return canMove;
     }
 
-    public abstract double getMoveRate();
-
     private boolean move() {
         boolean hasMoved = false;
-        if(random.nextDouble()< getMoveRate()) {
+        if(random.nextDouble()<Controller.MOVERATE) {
             hasMoved= true;
             int direction = random.nextInt(3);
             if (canMoveDirection(direction)) {
@@ -66,12 +68,11 @@ public abstract class User implements Updateable {
 
     }
 
-    public abstract Task getNewTask();
-
     private Task createTask(){
         if (random.nextDouble() > Controller.TASKCREATERATE) return  null;
-        Task t = getNewTask();
+        Task t = new Task(1,10,1,10,this);
         myTasks.add(t);
+        //TODO: Adjust default values
         return t;
     }
 
