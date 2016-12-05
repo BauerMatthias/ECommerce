@@ -6,7 +6,6 @@ import java.util.Set;
 public abstract class Controller implements Updateable {
     public static final int WIDTH = 10;
     public static final int HEIGHT = 15;
-    public static final double MOVERATE=0.5;
     public static final double TASKCREATERATE=0.3;
     public static final int EDGECOUNT = 18;
     public static final int FailurePerMinute = 30;
