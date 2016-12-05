@@ -2,13 +2,10 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-/**
- * Created by michael on 02.11.16.
- */
-public class User implements Updateable {
+public abstract class User implements Updateable {
     public int x;
     public int y;
-    private String id;
+    protected String id;
     private Random random = new Random();
     public Set<Task> myTasks = new HashSet<>();
     //direction 0: North
@@ -16,10 +13,9 @@ public class User implements Updateable {
     //2: South
     //3: West
 
-    public User(int x, int y, String id) {
+    public User(int x, int y) {
         this.x = x;
         this.y = y;
-        this.id = id;
         TimerManager.register(this);
     }
 
@@ -30,10 +26,10 @@ public class User implements Updateable {
                 canMove = y>1;
                 break;
             case 1:
-                canMove = x<Controller.WIDTH-1;
+                canMove = x< Controller.WIDTH-1;
                 break;
             case 2:
-                canMove = y<Controller.HEIGHT-1;
+                canMove = y< Controller.HEIGHT-1;
                 break;
             case 3:
                 canMove = x >1;
@@ -42,9 +38,11 @@ public class User implements Updateable {
         return canMove;
     }
 
+    public abstract double getMoveRate();
+
     private boolean move() {
         boolean hasMoved = false;
-        if(random.nextDouble()<Controller.MOVERATE) {
+        if(random.nextDouble()< getMoveRate()) {
             hasMoved= true;
             int direction = random.nextInt(3);
             if (canMoveDirection(direction)) {
@@ -68,11 +66,12 @@ public class User implements Updateable {
 
     }
 
+    public abstract Task getNewTask();
+
     private Task createTask(){
         if (random.nextDouble() > Controller.TASKCREATERATE) return  null;
-        Task t = new Task(1,10,1,10,this);
+        Task t = getNewTask();
         myTasks.add(t);
-        //TODO: Adjust default values
         return t;
     }
 
@@ -84,9 +83,9 @@ public class User implements Updateable {
         }
         Task t;
         if ((t = createTask()) != null){
-           // System.out.println("NEW TASK");
+            // System.out.println("NEW TASK");
             Controller.getInstance().addTasks(t);
         }
-       // System.out.println("User " + id + " x:"+x +" y:"+y);
+        // System.out.println("User " + id + " x:"+x +" y:"+y);
     }
 }

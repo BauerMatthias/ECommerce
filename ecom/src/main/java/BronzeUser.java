@@ -14,6 +14,7 @@ public class BronzeUser extends User {
     public Task getNewTask() {
         int cpu = 2;
         int memory = 1;
+
         int bandwidth = 2;
         int duration = 3;
         return new Task(cpu, memory, bandwidth, duration, this);
