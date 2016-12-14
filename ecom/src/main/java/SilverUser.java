@@ -26,8 +26,14 @@ public class SilverUser extends User {
     }
 
     @Override
+    public int getValue() {
+        return 20;
+    }
+
+    @Override
     public double getMoveRate() {
         return 0.5;
     }
+
 
 }

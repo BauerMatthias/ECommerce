@@ -1,7 +1,7 @@
 /**
  * Created by stefandraskovits on 04/11/2016.
  */
-public class Task {
+public class Task implements Comparable<Task>{
     public double workloadCPU;
     public double workloadMemory;
     public double workloadBandwidth;
@@ -44,4 +44,8 @@ public class Task {
     }
 
 
+    @Override
+    public int compareTo(Task o) {
+        return Integer.compare(o.user.getValue(),this.user.getValue());
+    }
 }

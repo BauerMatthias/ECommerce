@@ -28,8 +28,8 @@ public abstract class Controller implements Updateable {
 
     public List<PM> failedPMs = new ArrayList<>();
 
-    protected Set<Task> tasksPositionChanged = new HashSet<>();
-    protected Set<Task> newTasks = new HashSet<>();
+    protected List<Task> tasksPositionChanged = new ArrayList<>();
+    protected List<Task> newTasks = new ArrayList<>();
 
     public List<PM> restartedPMs = new ArrayList<>();
     protected List<VM> migratingVMS = new ArrayList<>();

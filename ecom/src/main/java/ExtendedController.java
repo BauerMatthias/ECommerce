@@ -1,9 +1,13 @@
+import java.util.Collections;
 import java.util.List;
 
 public class ExtendedController extends Controller {
 
     @Override
     public void update() {
+        //Prefer gold user over silver and bonze user
+        Collections.sort(this.newTasks);
+        Collections.sort(this.tasksPositionChanged);
         //Anstehenden Migrationen ausführen
         continueMigrate();
 
@@ -81,6 +85,7 @@ public class ExtendedController extends Controller {
 
         //neue Task
         breakFlag = false;
+
         for (Task newTask:this.newTasks) {
             VM vm = new VM(newTask.workloadCPU,newTask.workloadMemory,newTask.workloadBandwidth,null);
             breakFlag = false;

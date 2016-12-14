@@ -25,6 +25,11 @@ public class GoldUser extends User {
     }
 
     @Override
+    public int getValue() {
+        return 30;
+    }
+
+    @Override
     public double getMoveRate() {
         return 0.8;
     }

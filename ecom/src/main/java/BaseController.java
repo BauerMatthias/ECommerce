@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -7,6 +8,7 @@ public class BaseController extends Controller  {
 
     @Override
     public void update() {
+
         //Anstehenden Migrationen ausführen
         continueMigrate();
 

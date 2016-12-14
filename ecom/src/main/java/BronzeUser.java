@@ -26,9 +26,16 @@ public class BronzeUser extends User {
     }
 
     @Override
+    public int getValue() {
+        return 10;
+    }
+
+    @Override
     public double getMoveRate() {
         return 0.3;
     }
+
+
 
 }
 

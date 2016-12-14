@@ -54,7 +54,7 @@ public abstract class User implements Updateable {
     public abstract double getMeanDuration();
     public abstract double getMeanBandwidth();
     public abstract double getMeanCpu();
-
+    public abstract int getValue();
     public abstract double getMoveRate();
 
     private boolean move() {
