@@ -1,0 +1,6 @@
+- Users starting at random places 
+- 3 types (gold, silver, bronze) of users diffrent SLAs and diffrent priority
+- Diffrent SLA more CPU / memory usage etc.
+- Migration to more energy efficient edges and PMS 
+- Normal Distribution of Failures and these failures are normal distributed over all edges (so there are a few edges with few failures and and many failures but many edges with avg. amount of failures)
+- Handling of randomized enegry consumption of PM

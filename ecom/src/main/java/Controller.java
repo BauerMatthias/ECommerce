@@ -7,7 +7,7 @@ public abstract class Controller implements Updateable {
     public static final int WIDTH = 10;
     public static final int HEIGHT = 15;
     public static final double TASKCREATERATE=0.3;
-    public static final int EDGECOUNT = 18;
+    public static final int EDGECOUNT = 100;
     public static final int FailurePerMinute = 30;
     public static final double TRANSMISSIONFACTOR = 50;
     public static final double DIRTYFACTOR = 0.01;

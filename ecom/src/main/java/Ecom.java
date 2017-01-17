@@ -26,13 +26,13 @@ public class Ecom {
         TimerManager.items.clear();
         Random random = new Random();
         Set<User> users = new HashSet<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 25; i++) {
             users.add(new BronzeUser(random.nextInt(Controller.WIDTH), random.nextInt(Controller.HEIGHT), 1));
         }
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 15; i++) {
             users.add(new SilverUser(random.nextInt(Controller.WIDTH), random.nextInt(Controller.HEIGHT), 1));
         }
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 5; i++) {
             users.add(new GoldUser(random.nextInt(Controller.WIDTH), random.nextInt(Controller.HEIGHT), 1));
         }
 
@@ -40,7 +40,7 @@ public class Ecom {
         for (int j = 0; j < Controller.EDGECOUNT ; j++) {
             Edge edge = new Edge(random.nextInt(Controller.WIDTH),random.nextInt(Controller.HEIGHT));
             Set<PM> pms = new HashSet<>();
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 100; i++) {
                 pms.add(new PM(50,50,50,edge));
             }
 
@@ -54,7 +54,7 @@ public class Ecom {
 
         TimerManager.start();
         try {
-            Thread.sleep(10*1000);
+            Thread.sleep(60*1000);
             TimerManager.stop();
         } catch (InterruptedException e) {
             e.printStackTrace();
